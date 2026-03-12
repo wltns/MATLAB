@@ -1,1 +1,21 @@
+% 문제 5 
 
+% x 범위 설정
+x = 0:0.01:2;
+
+% 함수 정의
+u = 3*log10(70*x + 1);
+v = 4*cos(7*x);
+
+% 그래프 그리기
+plot(x,u,'b','LineWidth',2)
+hold on
+plot(x,v,'r','LineWidth',2)
+
+% 그래프 정보 추가
+xlabel('Distance (mile)')
+ylabel('Speed (mile/hour)')
+legend('u = 3log10(70x+1)','v = 4cos(7x)')
+title('Speed Functions')
+
+grid on      
