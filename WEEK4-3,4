@@ -1,1 +1,75 @@
+%% 문제 3 함수 
 
+function A = jjw_24010250_func_3(R)
+% 문제 3
+% 주어진 V에 대해 반지름 R에서 원뿔의 옆넓이 A를 계산하는 함수
+
+    % 전역 변수 V 사용
+    global V
+
+    % 높이 h 계산
+    h = 3 * V / (pi * R^2);
+
+    % 표면적 A 계산
+    A = pi * R * sqrt(R^2 + h^2);
+end
+
+%% 문제 3
+
+clear; clc;
+
+% 전역 변수 선언
+global V
+V = 10;
+
+% (a) 식 확인용
+disp('문제 3-(a)')
+disp('h = 3V/(pi*r^2)')
+disp('A(r) = pi*r*sqrt(r^2 + (3V/(pi*r^2))^2)')
+
+% (c) fminbnd로 최소화
+[rmin, Amin] = fminbnd(@jjw_24010250_func_3, 0.1, 10);
+
+% 최적 h 계산
+hmin = 3 * V / (pi * rmin^2);
+
+disp('문제 3-(c) 결과')
+disp(['최적 r = ', num2str(rmin, '%.10f'), ' in'])
+disp(['최적 h = ', num2str(hmin, '%.10f'), ' in'])
+disp(['최소 A = ', num2str(Amin, '%.10f')])
+
+% 그래프
+r = linspace(0.5, 3.5, 400);
+A = zeros(size(r));
+
+for k = 1:length(r)
+    A(k) = jjw_24010250_func_3(r(k));
+end
+
+figure;
+plot(r, A, 'b', 'LineWidth', 1.5); hold on;
+plot(rmin, Amin, 'ro', 'LineWidth', 1.5);
+yline(1.1*Amin, '--k', '110% of minimum', 'LineWidth', 1.2);
+grid on;
+xlabel('r (in)');
+ylabel('A');
+title('Surface Area A versus r');
+legend('A(r)', 'Minimum', '110% level', 'Location', 'best');
+
+% 민감도 조사: A가 최소값보다 10% 증가하는 경계 찾기
+target = 1.1 * Amin;
+
+f_left = @(x) jjw_24010250_func_3(x) - target;
+f_right = @(x) jjw_24010250_func_3(x) - target;
+
+r_left = fzero(f_left, [0.5, rmin]);
+r_right = fzero(f_right, [rmin, 3.5]);
+
+disp('민감도 조사 결과')
+disp(['A가 최소값보다 10% 증가하기 전까지 가능한 r의 범위: ', ...
+      num2str(r_left, '%.10f'), ' ~ ', num2str(r_right, '%.10f')])
+
+disp(['최적값에서 왼쪽으로 벗어날 수 있는 양 = ', ...
+      num2str(rmin - r_left, '%.10f'), ' in'])
+disp(['최적값에서 오른쪽으로 벗어날 수 있는 양 = ', ...
+      num2str(r_right - rmin, '%.10f'), ' in'])
