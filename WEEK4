@@ -64,4 +64,43 @@ ylabel('f(x)');
 title('f(x) = 0.3x - sin(2x)');
 legend('f(x)','roots','minimum');
 
+%% 문제 2 함수 
+
+function t = jjw_24010250_func_2(h, v0, g)
+% 문제 2
+% h = v0*t - (1/2)*g*t^2
+% 시간 t를 계산하는 함수
+
+    % 판별식
+    d = v0^2 - 2*g*h;
+
+    % 도달 불가능
+    if d < 0
+        t = [];
+        return;
+    end
+
+    % 두 해
+    t1 = (v0 - sqrt(d)) / g;
+    t2 = (v0 + sqrt(d)) / g;
+
+    % 결과 저장
+    t = [t1, t2];
+end
+
+%% 문제 2
+
+h = 100;
+v0 = 50;
+g = 9.81;
+
+t = jjw_24010250_func_2(h, v0, g);
+
+disp('문제 2 결과')
+disp(['t1 = ', num2str(t(1), '%.10f'), ' s'])
+disp(['t2 = ', num2str(t(2), '%.10f'), ' s'])
+
+disp('해석:')
+disp('t1: 올라가면서 100m 도달')
+disp('t2: 내려오면서 다시 100m 통과')
 
