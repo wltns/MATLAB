@@ -1,1 +1,67 @@
+%% 문제 1 함수 
+
+function [r, xmin, fmin] = jjw_24010250_func_1()
+% 문제 1
+% f(x) = 0.3x - sin(2x), 0 <= x <= 4
+% 근과 최소값을 구하는 함수
+
+    % 함수 정의
+    f = @(x) 0.3*x - sin(2*x);
+
+    % 첫 번째 근
+    r1 = 0;
+
+    % 두 번째 근
+    r2 = fzero(f, [1, 2]);
+
+    % 근 저장
+    r = [r1, r2];
+
+    % 최소값 계산
+    xmin = fminbnd(f, 0, 4);
+    fmin = f(xmin);
+end
+
+%% 문제 1
+
+clear; clc;
+
+[r, xmin, fmin] = jjw_24010250_func_1();
+
+disp('문제 1 결과')
+disp(['근 1 = ', num2str(r(1), '%.10f')])
+disp(['근 2 = ', num2str(r(2), '%.10f')])
+disp(['xmin = ', num2str(xmin, '%.10f')])
+disp(['fmin = ', num2str(fmin, '%.10f')])
+
+f = @(x) 0.3*x - sin(2*x);
+
+% 임계점
+x1 = acos(0.15)/2;
+x2 = (2*pi - acos(0.15))/2;
+
+cand = [0, x1, x2, 4];
+fval = f(cand);
+
+disp('후보점 비교')
+disp(table(cand.', fval.', 'VariableNames', {'x','f(x)'}))
+
+[minv, idx] = min(fval);
+disp(['전역 최소값 = ', num2str(minv, '%.10f')])
+disp(['위치 x = ', num2str(cand(idx), '%.10f')])
+
+% 그래프
+x = linspace(0,4,400);
+y = f(x);
+
+figure;
+plot(x,y,'b','LineWidth',1.5); hold on;
+plot(r,f(r),'ro','LineWidth',1.5);
+plot(xmin,fmin,'ks','LineWidth',1.5);
+grid on;
+xlabel('x');
+ylabel('f(x)');
+title('f(x) = 0.3x - sin(2x)');
+legend('f(x)','roots','minimum');
+
 
